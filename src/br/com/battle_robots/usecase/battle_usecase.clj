@@ -1,12 +1,13 @@
 (ns br.com.battle-robots.usecase.battle-usecase
   (:require [br.com.battle-robots.model.robot-keys :as keys]
-            [br.com.battle-robots.model.robot-model :as robot-data]))
+            [clojure.tools.logging :as log]))
 
-(defrecord BattleData [damage defense hp])
+(defrecord BattleData [name damage defense hp])
 
 (defn create-battle-data
   [robot-data]
   (->BattleData
+    (keys/name robot-data)
     (+ (keys/attack robot-data) (keys/agility robot-data))
     (+ (keys/defense robot-data) (keys/agility robot-data))
     (* (keys/defense robot-data) (keys/agility robot-data))))
@@ -35,21 +36,29 @@
 (defn battle-turn
   [attacker defender]
   (let [new-defender (hit attacker defender)]
-    (if (pos? (:hp new-defender))
-      (let [new-attacker (hit defender attacker)]
-        [new-attacker new-defender]
+    (do
+      (log/info (:name attacker) "hits" (:name new-defender) "new hp =" (:hp new-defender))
+      (if (pos? (:hp new-defender))
+
+        (let [new-attacker (hit defender attacker)]
+          (log/info (:name new-defender) "hits" (:name attacker) "new hp =" (:hp attacker))
+          [new-attacker new-defender]
+          )
+        [attacker new-defender]
         )
-      [attacker new-defender]
       )
     )
+
   )
+
 
 (defn battle [robot-a robot-b]
   (let [first (create-battle-data robot-a)
         second (create-battle-data robot-b)]
+    (log/info "Converted robots into data-battle")
     (loop [first first
            second second]
-      (println "hp first:" (:hp first) "hp second:" (:hp second))
+      (log/info "Check winner")
       (cond
         (not (pos? (:hp first))) second
         (not (pos? (:hp second))) first
