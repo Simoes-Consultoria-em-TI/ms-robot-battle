@@ -1,60 +1,11 @@
 (ns br.com.battle-robots.usecase.battle-usecase
-  (:require [br.com.battle-robots.model.robot-keys :as keys]
-            [clojure.tools.logging :as log]))
-
-(defrecord BattleData [name damage defense hp])
-
-(defn create-battle-data
-  [robot-data]
-  (->BattleData
-    (keys/name robot-data)
-    (+ (keys/attack robot-data) (keys/agility robot-data))
-    (+ (keys/defense robot-data) (keys/agility robot-data))
-    (* (keys/defense robot-data) (keys/agility robot-data))))
-
-
-(defn calculate-damage
-  [attack defender]
-  (-> (:damage attack)
-      (- (:defense defender))
-      (max 1)
-      )
-  )
-
-
-(defn remove-hp
-  [damage defender]
-  (update defender :hp - damage))
-
-
-(defn hit [attacker defender]
-  (-> (calculate-damage attacker defender)
-      (remove-hp defender)
-      )
-  )
-
-(defn battle-turn
-  [attacker defender]
-  (let [new-defender (hit attacker defender)]
-    (do
-      (log/info (:name attacker) "hits" (:name new-defender) "new hp =" (:hp new-defender))
-      (if (pos? (:hp new-defender))
-
-        (let [new-attacker (hit defender attacker)]
-          (log/info (:name new-defender) "hits" (:name attacker) "new hp =" (:hp attacker))
-          [new-attacker new-defender]
-          )
-        [attacker new-defender]
-        )
-      )
-    )
-
-  )
+  (:require [clojure.tools.logging :as log]
+            [br.com.battle-robots.domain.battle-domain :as battle-domain]))
 
 
 (defn battle [robot-a robot-b]
-  (let [first (create-battle-data robot-a)
-        second (create-battle-data robot-b)]
+  (let [first (battle-domain/create-battle-data robot-a)
+        second (battle-domain/create-battle-data robot-b)]
     (log/info "Converted robots into data-battle")
     (loop [first first
            second second]
@@ -63,7 +14,7 @@
         (not (pos? (:hp first))) second
         (not (pos? (:hp second))) first
         :else
-        (let [[new-first new-second] (battle-turn first second)]
+        (let [[new-first new-second] (battle-domain/battle-turn first second)]
           (recur new-first new-second)
           )
         )

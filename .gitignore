@@ -1,0 +1,57 @@
+# =========================
+# Clojure / JVM
+# =========================
+.cpcache/
+.nrepl-port
+.target/
+classes/
+pom.xml
+pom.xml.asc
+
+# =========================
+# REPL / tooling
+# =========================
+.rebel_readline_history
+.clj-kondo/.cache
+.lsp/
+.calva/
+.portal/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Build / packaging
+# =========================
+target/
+out/
+
+# =========================
+# IDEs
+# =========================
+
+## IntelliJ
+.idea/
+*.iml
+
+## VS Code
+.vscode/
+
+## Eclipse
+.project
+.classpath
+.settings/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Env / secrets
+# =========================
+.env
+.env.*
