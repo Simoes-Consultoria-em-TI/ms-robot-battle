@@ -1,16 +1,15 @@
 (ns br.com.battle-robots.domain.battle-domain
-  (:require [br.com.battle-robots.model.robot-keys :as keys]
-            [clojure.tools.logging :as log]))
+  (:require [clojure.tools.logging :as log]))
 
 (defrecord BattleData [name damage defense hp])
 
 (defn create-battle-data
   [robot-data]
   (->BattleData
-    (keys/name robot-data)
-    (+ (keys/attack robot-data) (keys/agility robot-data))
-    (+ (keys/defense robot-data) (keys/agility robot-data))
-    (* (keys/defense robot-data) (keys/agility robot-data))))
+    (:name robot-data)
+    (+ (:attack robot-data) (:agility robot-data))
+    (+ (:defense robot-data) (:agility robot-data))
+    (* (:defense robot-data) (:agility robot-data))))
 
 
 (defn calculate-damage

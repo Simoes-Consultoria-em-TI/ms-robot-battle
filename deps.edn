@@ -1,12 +1,15 @@
-{:paths ["src" "resources" "test"]
- :deps  {org.clojure/clojure {:mvn/version "1.11.1"}
-         ring/ring-jetty-adapter {:mvn/version "1.12.2"}
-         metosin/reitit {:mvn/version "0.7.2"}
-         com.fasterxml.jackson.core/jackson-databind {:mvn/version "2.17.2"}
-         org.clojure/tools.logging {:mvn/version "1.2.4"}
-         ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
+{:paths ["src" "resources"]
+
+ :deps
+ {org.clojure/clojure {:mvn/version "1.11.1"}
+  org.clojure/tools.logging {:mvn/version "1.2.4"}
+  ch.qos.logback/logback-classic {:mvn/version "1.4.14"}
+  metosin/reitit                {:mvn/version "0.7.2"}
+  ring/ring-jetty-adapter       {:mvn/version "1.12.2"}
+  metosin/muuntaja {:mvn/version "0.6.8"}
+  cheshire/cheshire             {:mvn/version "5.13.0"}}
 
  :aliases
- {:run  {:main-opts ["-m" "br.com.battle-robots.main"]}
-  :test {:extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
-         :main-opts  ["-m" "kaocha.runner"]}}}
+ {:run
+  {:main-opts ["-m" "br.com.battle-robots.main"]}
+  }}
